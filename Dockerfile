@@ -1,9 +1,9 @@
 # Start from the code-server Debian base image
-FROM codercom/code-server:3.9.3 
+FROM codercom/code-server:3.10.1
 
 USER coder
 
-# Apply VS Code settings 
+# Apply VS Code settings
 COPY settings.json .local/share/code-server/User/settings.json
 
 # Use bash shell
@@ -33,11 +33,8 @@ RUN sudo chown -R coder:coder /home/coder/.local
 
 RUN sudo curl -fsSL https://deb.nodesource.com/setup_15.x | sudo bash -
 RUN sudo apt-get install -y nodejs
-RUN sudo apt-get install -y python3
-RUN sudo apt-get install -y python3-pip
-RUN sudo pip3 install numpy
-RUN git config --global user.name "Kavin Shanbhag"
-RUN git config --global user.email "kavinplays@icloud.com"
+RUN sudo apt-get install build-essential gdb -y
+RUN code-server --install-extension ms-vscode.cpptools
 
 # Port
 ENV PORT=8080
@@ -45,3 +42,4 @@ ENV PORT=8080
 # Use our custom entrypoint script first
 COPY entrypoint.sh /usr/bin/deploy-container-entrypoint.sh
 ENTRYPOINT ["/usr/bin/deploy-container-entrypoint.sh"]
+
